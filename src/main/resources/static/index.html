@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <style>
+        body { font-family: sans-serif; margin: 3rem; }
+        input { font-size: 1.2rem; padding: .4rem; width: 16rem; }
+        button { font-size: 1.2rem; padding: .4rem 1rem; }
+        #result { font-size: 1.4rem; margin-top: 1.5rem; }
+        .error { color: #b00; }
+    </style>
+</head>
+<body>
+
+<h1>Calculator</h1>
+<p>Write an expression with spaces, for example <code>2 + 3 * 4</code>. It is calculated from
+    left to right by the Simple Calculator API.</p>
+
+<form id="form">
+    <input id="expression" value="2 + 3 * 4" autofocus>
+    <button type="submit">Calculate</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+    const form = document.getElementById('form');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const expression = document.getElementById('expression').value;
+
+        // encodeURIComponent turns "+" into "%2B" - without it the server reads the plus as a space
+        const response = await fetch('/calculate?expression=' + encodeURIComponent(expression));
+        const body = await response.json();
+
+        result.textContent = response.ok
+            ? expression + ' = ' + body.value
+            : body.type + ': ' + body.value;
+        result.className = response.ok ? '' : 'error';
+    });
+</script>
+
+</body>
+</html>

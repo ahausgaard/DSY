@@ -76,6 +76,13 @@ public class CalculatorApiCli
   /** Validates the expression tokens and sends them to the right endpoint. */
   static Result evaluate(String[] tokens) throws Exception
   {
+    validate(tokens);
+    return tokens.length == 3 ? calculate(tokens[0], tokens[1], tokens[2]) : sequence(tokens);
+  }
+
+  /** Operands on the even positions, operators on the odd ones. Throws if the expression is malformed. */
+  static void validate(String[] tokens)
+  {
     if (tokens.length < 3 || tokens.length % 2 == 0)
       throw new IllegalArgumentException("expected: number operator number [operator number ...]");
 
@@ -86,23 +93,36 @@ public class CalculatorApiCli
       else if (i % 2 == 1 && !OPS.containsKey(tokens[i]))
         throw new IllegalArgumentException("unknown operator '" + tokens[i] + "', use + - * /");
     }
-
-    return tokens.length == 3 ? calculate(tokens[0], tokens[1], tokens[2]) : sequence(tokens);
   }
 
   /** GET /calculate?operation=plus&left=1&right=2 */
   static Result calculate(String left, String operator, String right) throws Exception
   {
-    String url = API + "calculate?operation=" + OPS.get(operator)
-        + "&left=" + encode(left)
-        + "&right=" + encode(right);
+    String url = calculateUrl(left, operator, right);
 
     LOG.debug("GET {}", url);
     return send(HttpRequest.newBuilder(URI.create(url)).GET());
   }
 
+  static String calculateUrl(String left, String operator, String right)
+  {
+    return API + "calculate?operation=" + OPS.get(operator)
+        + "&left=" + encode(left)
+        + "&right=" + encode(right);
+  }
+
   /** POST /sequence with {"operations":[{"operation":"plus","right":2}, ...]} */
   static Result sequence(String[] tokens) throws Exception
+  {
+    String json = sequenceJson(tokens);
+
+    LOG.debug("POST {}sequence {}", API, json);
+    return send(HttpRequest.newBuilder(URI.create(API + "sequence"))
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString(json)));
+  }
+
+  static String sequenceJson(String[] tokens)
   {
     StringBuilder json = new StringBuilder("{\"operations\":[");
     json.append("{\"operation\":\"plus\",\"right\":").append(tokens[0]).append("}"); // 0 + first operand
@@ -111,12 +131,7 @@ public class CalculatorApiCli
       json.append(",{\"operation\":\"").append(OPS.get(tokens[i]))
           .append("\",\"right\":").append(tokens[i + 1]).append("}");
 
-    json.append("]}");
-
-    LOG.debug("POST {}sequence {}", API, json);
-    return send(HttpRequest.newBuilder(URI.create(API + "sequence"))
-        .header("Content-Type", "application/json")
-        .POST(HttpRequest.BodyPublishers.ofString(json.toString())));
+    return json.append("]}").toString();
   }
 
   /** Sends the request and reads type and value out of the JSON response. */
@@ -125,10 +140,16 @@ public class CalculatorApiCli
     HttpResponse<String> response = CLIENT.send(request.build(), HttpResponse.BodyHandlers.ofString());
     LOG.debug("HTTP {} {}", response.statusCode(), response.body());
 
-    Matcher matcher = RESULT.matcher(response.body());
+    return parse(response.body(), response.statusCode());
+  }
+
+  /** {"type":"VALUE","value":"3"} -> Result[VALUE, 3] */
+  static Result parse(String body, int statusCode)
+  {
+    Matcher matcher = RESULT.matcher(body);
 
     if (!matcher.find())
-      return new Result("UNEXPECTED_RESPONSE", "HTTP " + response.statusCode() + " " + response.body());
+      return new Result("UNEXPECTED_RESPONSE", "HTTP " + statusCode + " " + body);
 
     return new Result(matcher.group(1), matcher.group(2));
   }
