@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Log4j2 configuration. Log4j finds this file automatically because it is named
+  log4j2.xml and lies on the classpath (src/main/resources).
+
+  Two destinations: the console and the file logs/calculator.log on disk.
+-->
+<Configuration status="WARN">
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} %-5level %msg%n"/>
+        </Console>
+
+        <File name="File" fileName="logs/calculator.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <!-- Our own classes also log at DEBUG level -->
+        <Logger name="dsy" level="debug"/>
+
+        <Root level="info">
+            <!-- The console stays readable (INFO and up), the file keeps the details (DEBUG and up) -->
+            <AppenderRef ref="Console" level="info"/>
+            <AppenderRef ref="File" level="debug"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

@@ -21,8 +21,27 @@ Open the class with the `main` method and press the green arrow in IntelliJ, or 
 
 ```
 mvn compile
-java -cp target/classes dsy.intro.calculatorapi.CalculatorApiCli
+mvn dependency:build-classpath -Dmdep.outputFile=target/cp.txt
+java -cp "target/classes;target/cp.txt content" dsy.intro.calculatorapi.CalculatorApiCli
 ```
+
+(From the IDE it is just the green arrow - IntelliJ puts the dependencies on the classpath itself.)
+
+## Logging
+
+Log4j2 (`log4j-api` + `log4j-core`) is declared in `pom.xml`; IntelliJ downloads the jars when
+the Maven project is reloaded. The configuration is `src/main/resources/log4j2.xml`, which Log4j
+picks up automatically because it lies on the classpath, and it writes to two places:
+
+| Destination | Level | Content |
+|-------------|-------|---------|
+| Console | INFO and up | Results and warnings |
+| `logs/calculator.log` | DEBUG and up | The same, plus every request URL / JSON body and the raw HTTP response |
+
+Levels used in the code: `info` for results, `warn` for bad input and API errors such as division
+by zero, `error` with the stack trace when the API cannot be reached, `debug` for the HTTP traffic.
+
+The log folder is git ignored.
 
 ## Adding a new topic or assignment
 
