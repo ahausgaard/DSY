@@ -1,4 +1,4 @@
-package org.example;
+package dsy.intro.calculatorapi;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * One operator  -> GET  /calculate
  * More than one -> POST /sequence   (evaluated left to right, no operator precedence)
  */
-public class Main
+public class CalculatorApiCli
 {
   static final String API = "https://testpages.eviltester.com/apps/api/calculator/";
   static final HttpClient CLIENT = HttpClient.newHttpClient();
