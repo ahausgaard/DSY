@@ -1,0 +1,49 @@
+@startuml c4-l1-context
+title SlaughterHouse - C4 Level 1: System Context
+
+hide stereotype
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle<<person>> {
+  BackgroundColor #08427B
+  FontColor #FFFFFF
+}
+skinparam rectangle<<system>> {
+  BackgroundColor #1168BD
+  FontColor #FFFFFF
+}
+skinparam rectangle<<external>> {
+  BackgroundColor #6E6E6E
+  FontColor #FFFFFF
+}
+
+rectangle "**Reception Operator**\n[Station 1]" <<person>> as reception
+rectangle "**Cutting Operator**\n[Station 2]" <<person>> as cutting
+rectangle "**Packing Operator**\n[Station 3]" <<person>> as packing
+rectangle "**Quality Manager**\n//Initiates a recall//" <<person>> as quality
+
+rectangle "**SlaughterHouse System**\n\n//Registers animals, parts, trays and products,//\n//and traces a product back to the animals//\n//it may contain//" <<system>> as shs
+
+rectangle "**Farm**\n//Delivers live animals//" <<external>> as farm
+rectangle "**Distributor / Supermarket**\n//Receives products//" <<external>> as distributor
+
+' Keep the operators in process order, left to right
+reception -[hidden]right- cutting
+cutting   -[hidden]right- packing
+packing   -[hidden]right- quality
+
+' Registration: each operator talks only to their own local station
+reception -[#0B4884,bold]down-> shs : registers animals
+cutting   -[#0B4884,bold]down-> shs : registers parts and trays
+packing   -[#0B4884,bold]down-> shs : registers products
+quality   -[#0B4884,bold]down-> shs : asks for affected products
+
+' Recall, in and out of the slaughterhouse
+shs -[#0B4884,dashed]down-> distributor : recall notice
+distributor -[#0B4884,bold]up-> shs : traces a received product
+
+' Physical flow
+farm    -[#8C8C8C,dotted]down-> reception   : live animals //(physical)//
+packing -[#8C8C8C,dotted]down-> distributor : packed products //(physical)//
+
+@enduml

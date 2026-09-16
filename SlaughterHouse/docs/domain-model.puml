@@ -1,0 +1,88 @@
+@startuml domain-model
+title SlaughterHouse - Domain Model
+
+class Farm
+{
+  farmId
+  name
+  address
+}
+
+class Delivery
+{
+  deliveryId
+  arrivedAt
+  transportReg
+}
+
+class Animal
+{
+  animalId
+  species
+  liveWeight
+  registeredAt
+}
+
+class PartType
+{
+  code
+  name
+  species
+  countPerAnimal
+}
+
+class Part
+{
+  partId
+  weight
+  cutAt
+}
+
+class Tray
+{
+  trayId
+  maxWeight
+  netWeight
+  openedAt
+  closedAt
+}
+
+class ProductType
+{
+  code
+  name
+  kind
+}
+
+class ProductComponent
+{
+  quantity
+}
+
+class Product
+{
+  productId
+  packedAt
+  totalWeight
+}
+
+Farm "1" -- "0..*" Delivery : sends >
+
+Delivery "1" -- "1..*" Animal : contains >
+
+Animal "1" -- "0..*" Part : yields >
+
+PartType "1" -- "0..*" Part : classifies >
+
+Tray "0..1" -- "0..*" Part : holds >
+
+Product "0..*" -- "1..*" Tray : drawnFrom >
+
+ProductType "1" -- "0..*" Product : realisedBy >
+
+ProductType "1" -- "1..*" ProductComponent
+
+ProductComponent "0..*" -- "1" PartType : of >
+
+
+@enduml
