@@ -26,8 +26,8 @@ public class HelloClient
                 HelloServiceGrpc.newBlockingStub(managedChannel);
 
         HelloRequest request = HelloRequest.newBuilder()
-                .setFirstName( "Jan Munch" )
-                .setLastName( "Pedersen" )
+                .setFirstName( "Andreas" )
+                .setLastName( "Jakobsen" )
                 .build();
 
         HelloResponse response = helloStub.hello(request);

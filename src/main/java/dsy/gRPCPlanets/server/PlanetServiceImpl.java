@@ -3,20 +3,17 @@
  */
 
 
-package dk.via.jpe.grpcplanets.server;
+package dsy.gRPCPlanets.server;
 
 
-import dk.via.jpe.grpcplanets.*;
-import dk.via.jpe.grpcplanets.domain.Planet;
-import dk.via.jpe.grpcplanets.domain.PlanetListInterface;
-import dk.via.jpe.grpcplanets.domain.Moon;
-import dk.via.jpe.grpcplanets.domain.MoonListInterface;
-import dk.via.jpe.grpcplanets.dto.DTOFactory;
+import dsy.gRPCPlanets.*;
+import dsy.gRPCPlanets.domain.Planet;
+import dsy.gRPCPlanets.domain.PlanetListInterface;
+import dsy.gRPCPlanets.domain.Moon;
+import dsy.gRPCPlanets.domain.MoonListInterface;
+import dsy.gRPCPlanets.dto.DTOFactory;
 
 import io.grpc.stub.StreamObserver;
-
-import java.util.ArrayList;
-
 
 public class PlanetServiceImpl
         extends PlanetServiceGrpc.PlanetServiceImplBase

@@ -3,15 +3,15 @@
  */
 
 
-package dk.via.jpe.grpcplanets.client;
+package dsy.gRPCPlanets.client;
 
 
-import dk.via.jpe.grpcplanets.GetPlanetsResponse;
-import dk.via.jpe.grpcplanets.dto.DTOFactory;
-import dk.via.jpe.grpcplanets.domain.Planet;
-import dk.via.jpe.grpcplanets.domain.Moon;
+import dsy.gRPCPlanets.GetPlanetsResponse;
+import dsy.gRPCPlanets.dto.DTOFactory;
+import dsy.gRPCPlanets.domain.Planet;
+import dsy.gRPCPlanets.domain.Moon;
 
-import dk.via.jpe.grpcplanets.*;
+import dsy.gRPCPlanets.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 

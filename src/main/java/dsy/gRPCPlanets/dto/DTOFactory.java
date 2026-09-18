@@ -3,10 +3,10 @@
  */
 
 
-package dk.via.jpe.grpcplanets.dto;
+package dsy.gRPCPlanets.dto;
 
-import dk.via.jpe.grpcplanets.domain.*;
-import dk.via.jpe.grpcplanets.*;
+import dsy.gRPCPlanets.domain.*;
+import dsy.gRPCPlanets.*;
 
 import java.util.ArrayList;
 

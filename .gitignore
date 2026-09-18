@@ -33,5 +33,11 @@ build/
 ### VS Code ###
 .vscode/
 
+### Postman ###
+# Written by Postman's local workspace sync. Holds absolute paths and hash-named
+# references into target/, so it is only valid on the machine that created it.
+.postman/
+postman/
+
 ### Mac OS ###
 .DS_Store

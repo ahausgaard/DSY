@@ -3,10 +3,10 @@
  */
 
 
-package dk.via.jpe.grpcplanets.server;
+package dsy.gRPCPlanets.server;
 
 
-import dk.via.jpe.grpcplanets.domain.*;
+import dsy.gRPCPlanets.domain.*;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;

@@ -1,4 +1,3 @@
-# Use this workspace to collaborate
 workspace:
   id: 7d215c38-ba44-495d-858c-ccf07632933b
 
@@ -81,3 +80,6 @@ localResources:
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/logging/type/log_severity.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/shopping/type/types.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/apps/card/v1/card.proto
+resourceNameMappings:
+  specs:
+    - ../target/classes/gRPCHello.proto: gRPCHello.proto

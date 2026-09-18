@@ -9,7 +9,7 @@
         <version>4.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.example</groupId>
+    <groupId>dsy</groupId>
     <artifactId>SlaughterHouse</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SlaughterHouse</name>

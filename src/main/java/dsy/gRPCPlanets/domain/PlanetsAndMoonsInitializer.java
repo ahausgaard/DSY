@@ -3,7 +3,7 @@
  */
 
 
-package dk.via.jpe.grpcplanets.domain;
+package dsy.gRPCPlanets.domain;
 
 
 public class PlanetsAndMoonsInitializer
