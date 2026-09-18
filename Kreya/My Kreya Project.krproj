@@ -8,9 +8,12 @@
       "createMissingOperations": true,
       "options": {
         "files": [
+          "../src/main/proto/gRPCHello.proto",
+          "../src/main/proto/planets.proto"
+        ],
+        "importPaths": [
           "../src/main/proto"
         ],
-        "importPaths": [],
         "excludedFiles": []
       }
     }
