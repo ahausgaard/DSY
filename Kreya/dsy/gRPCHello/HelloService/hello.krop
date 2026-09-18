@@ -1,0 +1,13 @@
+{
+  "details": {
+    "methodFqn": "dsy.gRPCHello.HelloService.hello"
+  },
+  "requests": [
+    {
+      "location": "hello-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc",
+  "importStreamId": "efc079f5-1c01-4176-bcea-9b82c2343a51"
+}
