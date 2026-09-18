@@ -3,7 +3,7 @@ title SlaughterHouse - Domain Model
 
 class Farm
 {
-  farmId
+  cvr
   name
   address
 }
@@ -19,7 +19,7 @@ class Animal
 {
   animalId
   species
-  liveWeight
+  liveWeightKg
   registeredAt
 }
 
@@ -34,15 +34,15 @@ class PartType
 class Part
 {
   partId
-  weight
+  weightKg
   cutAt
 }
 
 class Tray
 {
   trayId
-  maxWeight
-  netWeight
+  maxWeightKg
+  netWeightKg
   openedAt
   closedAt
 }
@@ -63,7 +63,7 @@ class Product
 {
   productId
   packedAt
-  totalWeight
+  totalWeightKg
 }
 
 Farm "1" -- "0..*" Delivery : sends >

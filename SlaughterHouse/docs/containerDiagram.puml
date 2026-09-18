@@ -1,0 +1,78 @@
+@startuml c4-l2-container
+title SlaughterHouse - C4 Level 2: Containers
+
+hide stereotype
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle<<person>> {
+  BackgroundColor #08427B
+  FontColor #FFFFFF
+}
+skinparam rectangle<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam database<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam rectangle<<external>> {
+  BackgroundColor #6E6E6E
+  FontColor #FFFFFF
+}
+skinparam rectangle<<boundary>> {
+  BackgroundColor transparent
+  BorderColor #AAAAAA
+  BorderStyle dashed
+  FontColor #AAAAAA
+}
+
+rectangle "**Reception Operator**\n[Station 1]" <<person>> as reception
+rectangle "**Cutting Operator**\n[Station 2]" <<person>> as cutting
+rectangle "**Packing Operator**\n[Station 3]" <<person>> as packing
+rectangle "**Quality Manager**\n//Initiates a recall//" <<person>> as quality
+
+rectangle "SlaughterHouse System" <<boundary>> {
+
+  ' One deployable, started three times - the station is a startup choice,
+  ' not a separate program
+  rectangle "**Station Client**\n[Java console app]\n\n//One deployable, run at each of the three//\n//stations; the station is chosen at startup.//\n//Registers animals, parts, trays and products//" <<container>> as stationClient
+
+  rectangle "**Recall Client**\n[Java console app]\n\n//Asks which products may contain a given//\n//animal, and which farms a given product//\n//was drawn from//" <<container>> as recallClient
+
+  rectangle "**SlaughterHouse Server**\n[Java, Spring Boot, gRPC :9090]\n\n//Holds the domain model and the traceability//\n//logic; the only container that talks to the//\n//database//" <<container>> as server
+
+  database "**Database**\n[PostgreSQL 18]\n\n//Catalogue (farms, part types, product types)//\n//and operational data (deliveries, animals,//\n//parts, trays, products)//" <<container>> as db
+}
+
+rectangle "**Farm**\n//Delivers live animals//" <<external>> as farm
+rectangle "**Distributor / Supermarket**\n//Receives products//" <<external>> as distributor
+
+' Keep the operators in process order, left to right
+reception -[hidden]right- cutting
+cutting   -[hidden]right- packing
+packing   -[hidden]right- quality
+
+' Keep the two clients side by side above the server
+stationClient -[hidden]right- recallClient
+
+' Each operator uses a client, never the server directly
+reception -[#0B4884,bold]down-> stationClient : registers animals
+cutting   -[#0B4884,bold]down-> stationClient : registers parts and trays
+packing   -[#0B4884,bold]down-> stationClient : registers products
+quality   -[#0B4884,bold]down-> recallClient  : asks for affected products
+
+' Clients to server, server to database
+stationClient -[#0B4884,bold]down-> server : registers work\n//[gRPC]//
+recallClient  -[#0B4884,bold]down-> server : traces a product\n//[gRPC]//
+server        -[#0B4884,bold]down-> db     : reads from and writes to\n//[JDBC]//
+
+' Recall, out of the slaughterhouse and back in
+server      -[#0B4884,dashed]right-> distributor  : recall notice
+distributor -[#0B4884,bold]up->      recallClient : traces a received product
+
+' Physical flow
+farm    -[#8C8C8C,dotted]down-> reception   : live animals //(physical)//
+packing -[#8C8C8C,dotted]down-> distributor : packed products //(physical)//
+
+@enduml

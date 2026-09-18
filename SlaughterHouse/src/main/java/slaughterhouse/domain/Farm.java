@@ -6,6 +6,13 @@ public class Farm
   private String name;
   private String address;
 
+  public Farm(int cvr, String name, String address)
+  {
+    this.cvr = cvr;
+    this.name = name;
+    this.address = address;
+  }
+
   public int getCvr()
   {
     return cvr;
