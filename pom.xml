@@ -18,6 +18,10 @@
         <log4j.version>2.26.1</log4j.version>
         <junit.version>5.14.4</junit.version>
         <spring.boot.version>4.1.1</spring.boot.version>
+        <!-- Kept in step with the gRPC and protobuf versions the Spring Boot BOM manages,
+             so the generated code matches the libraries it runs against -->
+        <grpc.version>1.83.1</grpc.version>
+        <protobuf.version>4.35.1</protobuf.version>
     </properties>
 
     <!--
@@ -72,6 +76,34 @@
             <artifactId>spring-boot-starter-restclient</artifactId>
         </dependency>
 
+        <!--
+          gRPC: netty is the transport the server and client run on, protobuf is the
+          message serialisation, stub is the generated client/server base classes.
+        -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+
+        <!-- The generated gRPC code is annotated with @javax.annotation.Generated, which
+             is no longer part of the JDK, so the annotation has to come from here -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
         <!-- JUnit 5: only needed when compiling and running the tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -93,12 +125,50 @@
     </dependencies>
 
     <build>
+        <!-- Works out the platform (e.g. windows-x86_64) so the right protoc binary can be
+             downloaded below. It sets the ${os.detected.classifier} property -->
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.1</version>
+            </extension>
+        </extensions>
+
         <plugins>
             <!-- Runs the tests during "mvn test". Pinned because Maven's own default is too old for JUnit 5 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.6.0</version>
+            </plugin>
+
+            <!--
+              Turns the .proto files in src/main/proto into Java code during "mvn compile":
+              "compile" makes the message classes, "compile-custom" makes the gRPC stubs.
+              The output lands in target/generated-sources and is compiled with the rest.
+            -->
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+                <configuration>
+                    <protocArtifact>
+                        com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
+                    </protocArtifact>
+                    <pluginId>grpc-java</pluginId>
+                    <pluginArtifact>
+                        io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
+                    </pluginArtifact>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!--
