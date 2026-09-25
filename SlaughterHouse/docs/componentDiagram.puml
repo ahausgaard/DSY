@@ -1,0 +1,96 @@
+@startuml c4-l3-component
+title SlaughterHouse Server - C4 Level 3: Components (Traceability)
+
+hide stereotype
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam database<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam rectangle<<component>> {
+  BackgroundColor #85BBF0
+  FontColor #000000
+}
+skinparam rectangle<<contract>> {
+  BackgroundColor #FFFFFF
+  BorderColor #438DD5
+  FontColor #000000
+}
+skinparam rectangle<<test>> {
+  BackgroundColor #F2F2F2
+  BorderColor #8C8C8C
+  BorderStyle dashed
+  FontColor #000000
+}
+skinparam rectangle<<boundary>> {
+  BackgroundColor transparent
+  BorderColor #AAAAAA
+  BorderStyle dashed
+  FontColor #AAAAAA
+}
+
+rectangle "**Recall Client**\n[Java console app]\n\n//Asks which animals are in a product and//\n//which products an animal ended up in//" <<container>> as recallClient
+
+rectangle "**traceability.proto**\n[Protocol Buffers]\n\n//GetAnimal, GetProduct,//\n//GetAnimalsInProduct, GetProductsForAnimal.//\n//Stubs are generated for client and server//" <<contract>> as proto
+
+rectangle "SlaughterHouse Server [Java, Spring Boot, gRPC :9090]" <<boundary>> {
+
+  rectangle "**Traceability gRPC Endpoint**\n[gRPC service, extends\nTraceabilityServiceImplBase]\n\n//Receives requests, validates ids, maps//\n//not found to NOT_FOUND status//" <<component>> as endpoint
+
+  rectangle "**Message Mapper**\n[Java class]\n\n//Converts domain objects to proto messages//\n//(AnimalReply, ProductReply, id lists)//" <<component>> as mapper
+
+  rectangle "**Traceability Service**\n[Spring @Service]\n\n//Looks up animals and products, and walks//\n//Product -> Tray -> Part -> Animal both ways//\n//to find registration numbers and products//" <<component>> as service
+
+  rectangle "**Animal Repository**\n[Spring Data JPA]\n\n//Finds an animal, and the animals whose//\n//parts ended up in a given product//" <<component>> as animalRepo
+
+  rectangle "**Product Repository**\n[Spring Data JPA]\n\n//Finds a product, and the products drawn//\n//from trays holding a given animal's parts//" <<component>> as productRepo
+
+  rectangle "**Domain Model**\n[JPA entities]\n\n//Animal, Part, Tray, Product and the//\n//catalogue types they reference//" <<component>> as domain
+}
+
+database "**Database**\n[PostgreSQL 18]\n\n//animal, part, tray, product,//\n//product_tray tables//" <<container>> as db
+
+rectangle "Tests" <<boundary>> {
+
+  rectangle "**Service Unit Tests**\n[JUnit 5, Mockito]\n\n//Traversal logic against mocked//\n//repositories//" <<test>> as unitTests
+
+  rectangle "**gRPC Integration Tests**\n[JUnit 5, in-process gRPC server,\nTestcontainers PostgreSQL]\n\n//Calls every RPC through a real stub//\n//against seeded data//" <<test>> as itTests
+
+  rectangle "**Kreya Collection**\n[Kreya]\n\n//Manual requests against a running//\n//server//" <<test>> as kreya
+}
+
+' Contract sits beside the client it is shared with
+recallClient -[hidden]right- proto
+
+' Keep the two repositories side by side
+animalRepo -[hidden]right- productRepo
+
+' Request path, top to bottom
+recallClient -[#0B4884,bold]down-> endpoint : calls RPCs\n//[gRPC, protobuf]//
+endpoint     -[#0B4884,bold]down-> service  : delegates to
+endpoint     -[#0B4884,bold]right-> mapper  : builds replies with
+service      -[#0B4884,bold]down-> animalRepo  : reads animals
+service      -[#0B4884,bold]down-> productRepo : reads products
+animalRepo   -[#0B4884,bold]down-> db : queries\n//[JDBC]//
+productRepo  -[#0B4884,bold]down-> db : queries\n//[JDBC]//
+
+' Shared types
+animalRepo  .[#8C8C8C].> domain : returns
+productRepo .[#8C8C8C].> domain : returns
+mapper      .[#8C8C8C].> domain : reads
+endpoint    .[#8C8C8C].> proto  : implements
+recallClient .[#8C8C8C].> proto : uses generated stub
+mapper      .[#8C8C8C].> proto  : builds messages
+
+' What each test exercises
+unitTests -[#8C8C8C,dashed]up-> service  : tests
+itTests   -[#8C8C8C,dashed]up-> endpoint : tests end to end
+itTests   -[#8C8C8C,dashed]up-> db       : seeds and resets
+kreya     -[#8C8C8C,dashed]up-> endpoint : sends requests
+
+@enduml
