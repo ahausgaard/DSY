@@ -1,10 +1,19 @@
 package slaughterhouse.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Farm
 {
+  @Id
   private int cvr;
   private String name;
   private String address;
+
+  protected Farm()
+  {
+  }
 
   public Farm(int cvr, String name, String address)
   {

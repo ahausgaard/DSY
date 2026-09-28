@@ -1,0 +1,71 @@
+// Traceability of animals and products, used for recalls.
+// Ids are UUIDs as strings; an animal's id is its registration number.
+
+syntax = "proto3";
+
+package slaughterhouse;
+
+option java_package = "slaughterhouse.proto";
+option java_multiple_files = true;
+
+service TraceabilityService
+{
+  rpc GetAnimal( GetAnimalRequest ) returns ( AnimalReply );
+  rpc GetProduct( GetProductRequest ) returns ( ProductReply );
+
+  // Registration numbers of every animal that may have parts in the product
+  rpc GetAnimalsInProduct( GetAnimalsInProductRequest ) returns ( GetAnimalsInProductReply );
+
+  // Every product that may contain parts of the animal
+  rpc GetProductsForAnimal( GetProductsForAnimalRequest ) returns ( GetProductsForAnimalReply );
+}
+
+message GetAnimalRequest
+{
+  string animal_id = 1;
+}
+
+message AnimalReply
+{
+  string animal_id = 1;
+  string species = 2;
+  double live_weight_kg = 3;
+  string registered_at = 4;  // ISO-8601 local date-time
+  int32 farm_cvr = 5;
+  string farm_name = 6;
+}
+
+message GetProductRequest
+{
+  string product_id = 1;
+}
+
+message ProductReply
+{
+  string product_id = 1;
+  int32 product_type_code = 2;
+  string product_type_name = 3;
+  string kind = 4;  // SAME_PART or HALF_ANIMAL
+  double total_weight_kg = 5;
+  string packed_at = 6;  // ISO-8601 local date-time
+}
+
+message GetAnimalsInProductRequest
+{
+  string product_id = 1;
+}
+
+message GetAnimalsInProductReply
+{
+  repeated string animal_ids = 1;
+}
+
+message GetProductsForAnimalRequest
+{
+  string animal_id = 1;
+}
+
+message GetProductsForAnimalReply
+{
+  repeated string product_ids = 1;
+}
