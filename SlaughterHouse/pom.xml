@@ -79,12 +79,6 @@
 
     <build>
         <plugins>
-            <!--
-              Turns src/main/proto/*.proto into Java during "mvn compile": the message
-              classes, and through the grpc-java plugin the service base class and stubs.
-              Versions come from the Spring Boot BOM, so the generated code matches the
-              libraries it runs against.
-            -->
             <plugin>
                 <groupId>io.github.ascopes</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>

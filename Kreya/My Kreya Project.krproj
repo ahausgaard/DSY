@@ -16,6 +16,21 @@
         ],
         "excludedFiles": []
       }
+    },
+    {
+      "id": "70299ea6-beb1-4d33-94e5-5152beb4e0c0",
+      "name": "slaughterhouse-proto",
+      "importerName": "ProtoFile",
+      "createMissingOperations": true,
+      "options": {
+        "files": [
+          "../SlaughterHouse/src/main/proto/traceability.proto"
+        ],
+        "importPaths": [
+          "../SlaughterHouse/src/main/proto"
+        ],
+        "excludedFiles": []
+      }
     }
   ],
   "authConfigs": [],

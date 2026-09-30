@@ -1,5 +1,4 @@
 // Traceability of animals and products, used for recalls.
-// Ids are UUIDs as strings; an animal's id is its registration number.
 
 syntax = "proto3";
 
