@@ -46,4 +46,10 @@ distributor -[#0B4884,bold]up-> shs : traces a received product
 farm    -[#8C8C8C,dotted]down-> reception   : live animals //(physical)//
 packing -[#8C8C8C,dotted]down-> distributor : packed products //(physical)//
 
+legend right
+  **Solid**: direct, synchronous
+  **Dashed**: indirect, asynchronous
+  **Dotted**: physical flow
+endlegend
+
 @enduml

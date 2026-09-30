@@ -38,7 +38,7 @@ rectangle "SlaughterHouse System" <<boundary>> {
   ' not a separate program
   rectangle "**Station Client**\n[Java console app]\n\n//One deployable, run at each of the three//\n//stations; the station is chosen at startup.//\n//Registers animals, parts, trays and products//" <<container>> as stationClient
 
-  rectangle "**Recall Client**\n[Java console app]\n\n//Asks which products may contain a given//\n//animal, and which farms a given product//\n//was drawn from//" <<container>> as recallClient
+  rectangle "**Recall Client**\n[Java console app]\n\n//Asks which animals are in a product and//\n//which products an animal ended up in//" <<container>> as recallClient
 
   rectangle "**SlaughterHouse Server**\n[Java, Spring Boot, gRPC :9090]\n\n//Holds the domain model and the traceability//\n//logic; the only container that talks to the//\n//database//" <<container>> as server
 
@@ -62,8 +62,9 @@ cutting   -[#0B4884,bold]down-> stationClient : registers parts and trays
 packing   -[#0B4884,bold]down-> stationClient : registers products
 quality   -[#0B4884,bold]down-> recallClient  : asks for affected products
 
-' Clients to server, server to database
-stationClient -[#0B4884,bold]down-> server : registers work\n//[gRPC]//
+' Clients to server, server to database. Stations send their work indirectly,
+' so they keep working while the network is down
+stationClient -[#0B4884,dashed]down-> server : registers work\n//indirect, asynchronous//
 recallClient  -[#0B4884,bold]down-> server : traces a product\n//[gRPC]//
 server        -[#0B4884,bold]down-> db     : reads from and writes to\n//[JDBC]//
 
@@ -74,5 +75,11 @@ distributor -[#0B4884,bold]up->      recallClient : traces a received product
 ' Physical flow
 farm    -[#8C8C8C,dotted]down-> reception   : live animals //(physical)//
 packing -[#8C8C8C,dotted]down-> distributor : packed products //(physical)//
+
+legend right
+  **Solid**: direct, synchronous
+  **Dashed**: indirect, asynchronous
+  **Dotted**: physical flow
+endlegend
 
 @enduml
