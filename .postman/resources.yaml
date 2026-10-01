@@ -4,8 +4,8 @@ workspace:
 localResources:
   specs:
     - ../src/main/proto/gRPCHello.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/extended_operations.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/api/annotations.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/apps/extended_operations.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/shopping/annotations.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/api/auth.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/api/backend.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/api/billing.proto
@@ -41,24 +41,20 @@ localResources:
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/rpc/code.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/rpc/error_details.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/rpc/status.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/longrunning/operations.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/calendar_period.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/color.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/date.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/rpc/operations.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/fraction.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/interval.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/quaternion.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/datetime.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/dayofweek.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/decimal.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/expr.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/fraction.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/interval.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/latlng.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/localized_text.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/money.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/month.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/phone_number.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/postal_address.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/quaternion.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/timeofday.proto
     - ../target/protoc-dependencies/be595611f69902afa405b4283fb17eb4/google/protobuf/any.proto
     - ../target/protoc-dependencies/be595611f69902afa405b4283fb17eb4/google/protobuf/api.proto
     - ../target/protoc-dependencies/be595611f69902afa405b4283fb17eb4/google/protobuf/descriptor.proto
@@ -71,15 +67,104 @@ localResources:
     - ../target/protoc-dependencies/be595611f69902afa405b4283fb17eb4/google/protobuf/timestamp.proto
     - ../target/protoc-dependencies/be595611f69902afa405b4283fb17eb4/google/protobuf/type.proto
     - ../target/protoc-dependencies/be595611f69902afa405b4283fb17eb4/google/protobuf/wrappers.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/audit/audit_log.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/geo/type/viewport.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/location/locations.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/apps/audit/audit_log.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/logging/type/viewport.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/apps/location/locations.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/rpc/context/attribute_context.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/rpc/context/audit_context.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/logging/type/http_request.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/longrunning/type/http_request.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/logging/type/log_severity.proto
     - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/shopping/type/types.proto
-    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/apps/card/v1/card.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/card/v1/card.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/binlog/v1/binarylog.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/channelz/v1/channelz.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/health/v1/health.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/reflection/v1/reflection.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/reflection/v1alpha/reflection.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/rpc/code.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/apps/card/v1/card.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/audit/audit_log.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/extended_operations.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/location/locations.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/geo/type/viewport.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/logging/type/http_request.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/longrunning/operations.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/rpc/context/attribute_context.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/shopping/type/types.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/type/calendar_period.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/protobuf-java-3.25.9-dfce6cf9924204e17fe95feb82b654e61f519e08/google/protobuf/any.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/binlog/v1/binarylog.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/channelz/v1/channelz.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/health/v1/health.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/reflection/v1/reflection.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/reflection/v1alpha/reflection.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/api/annotations.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/apps/card/v1/card.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/audit/audit_log.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/extended_operations.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/location/locations.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/geo/type/viewport.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/logging/type/http_request.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/longrunning/operations.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/rpc/code.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/rpc/context/attribute_context.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/shopping/type/types.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/type/calendar_period.proto
+    - ../C:/Programming/GitHub/DSY/SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/protobuf-java-3.25.9-dfce6cf9924204e17fe95feb82b654e61f519e08/google/protobuf/any.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/extended_operations.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/rpc/error_details.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/audit/audit_log.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/location/locations.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/geo/type/viewport.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/logging/type/http_request.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/api/auth.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/longrunning/operations.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/calendar_period.proto
+    - ../C:/Programming/GitHub/DSY/target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/apps/card/v1/card.proto
 resourceNameMappings:
   specs:
     - ../target/classes/gRPCHello.proto: gRPCHello.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/binlog/v1/binarylog.proto: binarylog.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/channelz/v1/channelz.proto: channelz.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/health/v1/health.proto: health.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/reflection/v1/reflection.proto: reflection.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/reflection/v1alpha/reflection.proto: reflection.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/rpc/code.proto: code.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/apps/card/v1/card.proto: card.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/audit/audit_log.proto: audit_log.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/extended_operations.proto: extended_operations.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/location/locations.proto: locations.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/geo/type/viewport.proto: viewport.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/logging/type/http_request.proto: http_request.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/longrunning/operations.proto: operations.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/shopping/type/types.proto: types.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/type/calendar_period.proto: calendar_period.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/protobuf-java-3.25.9-dfce6cf9924204e17fe95feb82b654e61f519e08/google/protobuf/any.proto: any.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/binlog/v1/binarylog.proto: binarylog.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/channelz/v1/channelz.proto: channelz.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/health/v1/health.proto: health.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/reflection/v1/reflection.proto: reflection.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/grpc-services-1.83.1-ef3160913bcee17a7475e553c9cdd0cc1f5c9f66/grpc/reflection/v1alpha/reflection.proto: reflection.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/api/annotations.proto: annotations.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/apps/card/v1/card.proto: card.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/audit/audit_log.proto: audit_log.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/extended_operations.proto: extended_operations.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/cloud/location/locations.proto: locations.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/geo/type/viewport.proto: viewport.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/logging/type/http_request.proto: http_request.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/longrunning/operations.proto: operations.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/rpc/code.proto: code.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/rpc/context/attribute_context.proto: attribute_context.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/shopping/type/types.proto: types.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/type/calendar_period.proto: calendar_period.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/default/archives/protobuf-java-3.25.9-dfce6cf9924204e17fe95feb82b654e61f519e08/google/protobuf/any.proto: any.proto
+    - ../SlaughterHouse/target/protobuf-maven-plugin/generate/generate/archives/proto-google-common-protos-2.64.1-b3927e0c51d9cde7b14d8da4b32eeee296d31961/google/rpc/context/attribute_context.proto: attribute_context.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/rpc/error_details.proto: error_details.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/audit/audit_log.proto: audit_log.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/extended_operations.proto: extended_operations.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/cloud/location/locations.proto: locations.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/geo/type/viewport.proto: viewport.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/logging/type/http_request.proto: http_request.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/api/auth.proto: auth.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/type/calendar_period.proto: calendar_period.proto
+    - ../target/protoc-dependencies/4749efa17ddbf318e17ba5d64aedd9cc/google/apps/card/v1/card.proto: card.proto

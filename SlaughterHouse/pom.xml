@@ -36,6 +36,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-grpc-server</artifactId>
         </dependency>
+        <!-- Server reflection, so clients like Postman can list the services and methods -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-services</artifactId>
+        </dependency>
 
         <!-- JPA (Hibernate) for the entities and repositories, PostgreSQL as the database -->
         <dependency>
