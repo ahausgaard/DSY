@@ -42,6 +42,17 @@
             <artifactId>grpc-services</artifactId>
         </dependency>
 
+        <!-- Spring MVC on embedded Tomcat (port 8080) for the REST registration API -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+        <!-- Bean Validation (@NotNull, @Positive...) for the REST request DTOs -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- JPA (Hibernate) for the entities and repositories, PostgreSQL as the database -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -56,6 +67,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- @WebMvcTest and MockMvc for testing the REST controllers -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- Calls the gRPC endpoint through a real stub, without opening a network port -->
