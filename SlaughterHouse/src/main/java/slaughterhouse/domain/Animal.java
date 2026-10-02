@@ -32,6 +32,16 @@ public class Animal
   {
   }
 
+  public Animal(UUID animalId, Delivery delivery, Species species, BigDecimal liveWeightKg,
+      LocalDateTime registeredAt)
+  {
+    this.animalId = animalId;
+    this.delivery = delivery;
+    this.species = species;
+    this.liveWeightKg = liveWeightKg;
+    this.registeredAt = registeredAt;
+  }
+
   public UUID getAnimalId()
   {
     return animalId;
