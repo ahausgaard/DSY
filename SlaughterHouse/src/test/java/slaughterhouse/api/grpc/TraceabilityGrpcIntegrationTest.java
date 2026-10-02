@@ -1,4 +1,4 @@
-package slaughterhouse.grpc;
+package slaughterhouse.api.grpc;
 
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
