@@ -1,4 +1,4 @@
-package slaughterhouse.grpc;
+package slaughterhouse.api.grpc;
 
 import slaughterhouse.domain.Animal;
 import slaughterhouse.domain.Farm;
