@@ -40,7 +40,7 @@ rectangle "SlaughterHouse System" <<boundary>> {
 
   rectangle "**Recall Client**\n[Java console app]\n\n//Asks which animals are in a product and//\n//which products an animal ended up in//" <<container>> as recallClient
 
-  rectangle "**SlaughterHouse Server**\n[Java, Spring Boot, gRPC :9090]\n\n//Holds the domain model and the traceability//\n//logic; the only container that talks to the//\n//database//" <<container>> as server
+  rectangle "**SlaughterHouse Server**\n[Java, Spring Boot, REST :8080, gRPC :9090]\n\n//Holds the domain model, registration and//\n//traceability logic; the only container that//\n//talks to the database//" <<container>> as server
 
   database "**Database**\n[PostgreSQL 18]\n\n//Catalogue (farms, part types, product types)//\n//and operational data (deliveries, animals,//\n//parts, trays, products)//" <<container>> as db
 }
@@ -62,9 +62,10 @@ cutting   -[#0B4884,bold]down-> stationClient : registers parts and trays
 packing   -[#0B4884,bold]down-> stationClient : registers products
 quality   -[#0B4884,bold]down-> recallClient  : asks for affected products
 
-' Clients to server, server to database. Stations send their work indirectly,
-' so they keep working while the network is down
-stationClient -[#0B4884,dashed]down-> server : registers work\n//indirect, asynchronous//
+' Clients to server, server to database. Stations queue their work locally and send
+' it when the network is up, so they keep working while it is down. The client-made
+' ids make a resend safe
+stationClient -[#0B4884,dashed]down-> server : registers work\n//[REST/JSON], queued while//\n//offline, sent when back online//
 recallClient  -[#0B4884,bold]down-> server : traces a product\n//[gRPC]//
 server        -[#0B4884,bold]down-> db     : reads from and writes to\n//[JDBC]//
 
