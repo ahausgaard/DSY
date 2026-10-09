@@ -14,9 +14,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -49,8 +51,10 @@ class RegistrationServiceTest
     when(deliveryRepository.findById(deliveryId)).thenReturn(Optional.of(delivery));
     when(animalRepository.save(any())).thenAnswer(call -> call.getArgument(0));
 
-    Animal animal = service.registerAnimal(animalId, deliveryId, Species.Pig, weight);
+    Registration registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight);
+    Animal animal = registration.animal();
 
+    assertTrue(registration.created());
     assertEquals(animalId, animal.getAnimalId());
     assertSame(delivery, animal.getDelivery());
     assertEquals(Species.Pig, animal.getSpecies());
@@ -75,7 +79,10 @@ class RegistrationServiceTest
     Animal existing = new Animal(animalId, mock(Delivery.class), Species.Pig, weight, LocalDateTime.now());
     when(animalRepository.findById(animalId)).thenReturn(Optional.of(existing));
 
-    assertSame(existing, service.registerAnimal(animalId, deliveryId, Species.Pig, weight));
+    Registration registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight);
+
+    assertSame(existing, registration.animal());
+    assertFalse(registration.created());
     verify(animalRepository, never()).save(any());
   }
 }

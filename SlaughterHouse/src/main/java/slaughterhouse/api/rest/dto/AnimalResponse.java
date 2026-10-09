@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record AnimalResponse(UUID animalId, UUID deliveryId, Species species,
+public record AnimalResponse(UUID animalId, UUID deliveryId, int farmCvr, Species species,
                              BigDecimal liveWeightKg,
                              LocalDateTime registeredAt)
 {
@@ -16,6 +16,7 @@ public record AnimalResponse(UUID animalId, UUID deliveryId, Species species,
     return new AnimalResponse(
         animal.getAnimalId(),
         animal.getDelivery().getDeliveryId(),
+        animal.getDelivery().getFarm().getCvr(),
         animal.getSpecies(),
         animal.getLiveWeightKg(),
         animal.getRegisteredAt());

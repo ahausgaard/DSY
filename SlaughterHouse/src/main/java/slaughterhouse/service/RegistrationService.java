@@ -9,31 +9,57 @@ import slaughterhouse.persistence.AnimalRepository;
 import slaughterhouse.persistence.DeliveryRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-@Service
-@Transactional
-public class RegistrationService
+@Service @Transactional public class RegistrationService
 {
   private final AnimalRepository animalRepository;
   private final DeliveryRepository deliveryRepository;
 
-  public RegistrationService(AnimalRepository animalRepository, DeliveryRepository deliveryRepository)
+  public RegistrationService(AnimalRepository animalRepository,
+      DeliveryRepository deliveryRepository)
   {
     this.animalRepository = animalRepository;
     this.deliveryRepository = deliveryRepository;
   }
 
-  public Animal registerAnimal(UUID animalId, UUID deliveryId, Species species, BigDecimal liveWeightKg)
+  public Registration registerAnimal(UUID animalId, UUID deliveryId,
+      Species species, BigDecimal liveWeightKg)
   {
-    return animalRepository.findById(animalId).orElseGet(() ->
-    {
-      Delivery delivery = deliveryRepository.findById(deliveryId)
-          .orElseThrow(() -> new NotFoundException("No delivery with id " + deliveryId));
+    Optional<Animal> existing = animalRepository.findById(animalId);
+    if (existing.isPresent())
+      return new Registration(existing.get(), false);
 
-      return animalRepository.save(
-          new Animal(animalId, delivery, species, liveWeightKg, LocalDateTime.now()));
-    });
+    Delivery delivery = deliveryRepository.findById(deliveryId).orElseThrow(
+        () -> new NotFoundException("No delivery with id " + deliveryId));
+
+    Animal animal = animalRepository.save(
+        new Animal(animalId, delivery, species, liveWeightKg,
+            LocalDateTime.now()));
+    return new Registration(animal, true);
+  }
+
+  @Transactional(readOnly = true) public Animal getAnimal(UUID animalId)
+  {
+    return animalRepository.findById(animalId).orElseThrow(
+        () -> new NotFoundException("No animal with id " + animalId));
+  }
+
+  @Transactional(readOnly = true) public List<Animal> getAnimalsArrivedOn(
+      LocalDate date)
+  {
+    return animalRepository.findByDeliveryArrivedAtBetween(date.atStartOfDay(),
+        date.plusDays(1).atStartOfDay());
+  }
+
+  @Transactional(readOnly = true) public List<Animal> getAnimalsFromFarm(
+      int cvr)
+  {
+     return animalRepository.findByDeliveryFarmCvr(cvr);
   }
 }
+

@@ -7,7 +7,7 @@ import slaughterhouse.domain.Species;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record RegisterAnimalRequest(@NotNull UUID deliveryId, @NotNull Species species, @NotNull @Positive BigDecimal liveWeightKg)
+public record RegisterAnimalRequest(@NotNull UUID animalId, @NotNull UUID deliveryId, @NotNull Species species, @NotNull @Positive BigDecimal liveWeightKg)
 {
 
 }
