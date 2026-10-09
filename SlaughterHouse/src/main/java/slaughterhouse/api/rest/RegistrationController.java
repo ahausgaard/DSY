@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import slaughterhouse.api.rest.dto.AnimalResponse;
 import slaughterhouse.api.rest.dto.RegisterAnimalRequest;
-import slaughterhouse.persistence.AnimalRepository;
 import slaughterhouse.service.Registration;
 import slaughterhouse.service.RegistrationService;
 
@@ -18,11 +17,9 @@ import java.util.UUID;
 {
   private final RegistrationService registrationService;
 
-  public RegistrationController(RegistrationService registrationService,
-      AnimalRepository animalRepository)
+  public RegistrationController(RegistrationService registrationService)
   {
     this.registrationService = registrationService;
-    this.animalRepository = animalRepository;
   }
 
   @PostMapping public ResponseEntity<AnimalResponse> registerAnimal(
