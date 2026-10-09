@@ -28,7 +28,7 @@ import java.util.UUID;
   }
 
   public Registration registerAnimal(UUID animalId, UUID deliveryId,
-      Species species, BigDecimal liveWeightKg)
+      Species species, BigDecimal liveWeightKg, LocalDateTime registeredAt)
   {
     Optional<Animal> existing = animalRepository.findById(animalId);
     if (existing.isPresent())
@@ -38,8 +38,7 @@ import java.util.UUID;
         () -> new NotFoundException("No delivery with id " + deliveryId));
 
     Animal animal = animalRepository.save(
-        new Animal(animalId, delivery, species, liveWeightKg,
-            LocalDateTime.now()));
+        new Animal(animalId, delivery, species, liveWeightKg, registeredAt));
     return new Registration(animal, true);
   }
 

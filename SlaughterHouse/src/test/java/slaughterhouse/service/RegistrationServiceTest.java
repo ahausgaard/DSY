@@ -15,7 +15,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,6 +29,7 @@ class RegistrationServiceTest
   private final UUID animalId = UUID.randomUUID();
   private final UUID deliveryId = UUID.randomUUID();
   private final BigDecimal weight = new BigDecimal("112.500");
+  private final LocalDateTime registeredAt = LocalDateTime.of(2026, 10, 9, 7, 42);
 
   private AnimalRepository animalRepository;
   private DeliveryRepository deliveryRepository;
@@ -51,7 +51,7 @@ class RegistrationServiceTest
     when(deliveryRepository.findById(deliveryId)).thenReturn(Optional.of(delivery));
     when(animalRepository.save(any())).thenAnswer(call -> call.getArgument(0));
 
-    Registration registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight);
+    Registration registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight, registeredAt);
     Animal animal = registration.animal();
 
     assertTrue(registration.created());
@@ -59,7 +59,7 @@ class RegistrationServiceTest
     assertSame(delivery, animal.getDelivery());
     assertEquals(Species.Pig, animal.getSpecies());
     assertEquals(weight, animal.getLiveWeightKg());
-    assertNotNull(animal.getRegisteredAt());
+    assertEquals(registeredAt, animal.getRegisteredAt());
   }
 
   @Test
@@ -69,17 +69,17 @@ class RegistrationServiceTest
     when(deliveryRepository.findById(deliveryId)).thenReturn(Optional.empty());
 
     assertThrows(NotFoundException.class,
-        () -> service.registerAnimal(animalId, deliveryId, Species.Pig, weight));
+        () -> service.registerAnimal(animalId, deliveryId, Species.Pig, weight, registeredAt));
     verify(animalRepository, never()).save(any());
   }
 
   @Test
   void registeringTheSameAnimalAgainReturnsTheExistingOne()
   {
-    Animal existing = new Animal(animalId, mock(Delivery.class), Species.Pig, weight, LocalDateTime.now());
+    Animal existing = new Animal(animalId, mock(Delivery.class), Species.Pig, weight, registeredAt);
     when(animalRepository.findById(animalId)).thenReturn(Optional.of(existing));
 
-    Registration registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight);
+    Registration registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight, registeredAt);
 
     assertSame(existing, registration.animal());
     assertFalse(registration.created());
