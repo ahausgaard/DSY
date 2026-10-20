@@ -9,7 +9,9 @@ import slaughterhouse.persistence.AnimalRepository;
 import slaughterhouse.persistence.DeliveryRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -84,5 +86,33 @@ class RegistrationServiceTest
     assertSame(existing, registration.animal());
     assertFalse(registration.created());
     verify(animalRepository, never()).save(any());
+  }
+
+  @Test
+  void unknownAnimalIsNotFound()
+  {
+    when(animalRepository.findById(animalId)).thenReturn(Optional.empty());
+
+    assertThrows(NotFoundException.class, () -> service.getAnimal(animalId));
+  }
+
+  @Test
+  void animalsArrivedOnADateAreSearchedFromMidnightToMidnight()
+  {
+    List<Animal> animals = List.of(mock(Animal.class));
+    when(animalRepository.findByDeliveryArrivedAtBetween(
+        LocalDateTime.of(2026, 10, 9, 0, 0), LocalDateTime.of(2026, 10, 10, 0, 0)))
+        .thenReturn(animals);
+
+    assertSame(animals, service.getAnimalsArrivedOn(LocalDate.of(2026, 10, 9)));
+  }
+
+  @Test
+  void animalsFromAFarmAreFoundByCvr()
+  {
+    List<Animal> animals = List.of(mock(Animal.class));
+    when(animalRepository.findByDeliveryFarmCvr(12345678)).thenReturn(animals);
+
+    assertSame(animals, service.getAnimalsFromFarm(12345678));
   }
 }

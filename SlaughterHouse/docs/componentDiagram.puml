@@ -1,5 +1,5 @@
 @startuml c4-l3-component
-title SlaughterHouse Server - C4 Level 3: Components (Traceability)
+title SlaughterHouse Server - C4 Level 3: Components
 
 hide stereotype
 skinparam shadowing false
@@ -23,32 +23,33 @@ skinparam rectangle<<boundary>> {
   FontColor #AAAAAA
 }
 
-rectangle "**Recall Client**\n[Java console app]\n\n//Asks which animals are in a product and//\n//which products an animal ended up in//" <<container>> as recallClient
+rectangle "**Station Client**\n[Java console app]" <<container>> as stationClient
+rectangle "**Recall Client**\n[Java console app]" <<container>> as recallClient
 
-rectangle "SlaughterHouse Server [Java, Spring Boot, gRPC :9090]" <<boundary>> {
+rectangle "SlaughterHouse Server [Java, Spring Boot]" <<boundary>> {
 
-  rectangle "**Traceability gRPC Endpoint**\n[gRPC service, extends\nTraceabilityServiceImplBase]\n\n//Implements GetAnimal, GetProduct,//\n//GetAnimalsInProduct, GetProductsForAnimal;//\n//maps not found to NOT_FOUND status//" <<component>> as endpoint
+  rectangle "**Registration Controller**\n[Spring @RestController]\n\n//Exposes the animal registration API//" <<component>> as controller
 
-  rectangle "**Message Mapper**\n[Java class]\n\n//Converts domain objects to proto messages//\n//(AnimalReply, ProductReply, id lists)//" <<component>> as mapper
+  rectangle "**Traceability Endpoint**\n[gRPC service]\n\n//Exposes the traceability RPCs//" <<component>> as endpoint
 
-  rectangle "**Traceability Service**\n[Spring @Service]\n\n//Looks up animals and products, and walks//\n//Product -> Tray -> Part -> Animal both ways//\n//to find registration numbers and products//" <<component>> as service
+  rectangle "**Registration Service**\n[Spring @Service]\n\n//Registers animals; finds them by id, date or farm//" <<component>> as regService
 
-  rectangle "**Animal Repository**\n[Spring Data JPA]\n\n//Finds an animal, and the animals whose//\n//parts ended up in a given product//" <<component>> as animalRepo
+  rectangle "**Traceability Service**\n[Spring @Service]\n\n//Traces products to animals and back//" <<component>> as traceService
 
-  rectangle "**Product Repository**\n[Spring Data JPA]\n\n//Finds a product, and the products drawn//\n//from trays holding a given animal's parts//" <<component>> as productRepo
+  rectangle "**Repositories**\n[Spring Data JPA]\n\n//Read and write the domain entities//" <<component>> as repos
 }
 
-database "**Database**\n[PostgreSQL 18]\n\n//animal, part, tray, product,//\n//product_tray tables//" <<container>> as db
+database "**Database**\n[PostgreSQL 18]" <<container>> as db
 
-' Keep the two repositories side by side
-animalRepo -[hidden]right- productRepo
+' Keep the two flows side by side
+stationClient -[hidden]right- recallClient
 
-recallClient -[#0B4884,bold]down-> endpoint : calls RPCs\n//[gRPC, protobuf]//
-endpoint     -[#0B4884,bold]down-> service  : delegates to
-endpoint     -[#0B4884,bold]right-> mapper  : builds replies with
-service      -[#0B4884,bold]down-> animalRepo  : reads animals
-service      -[#0B4884,bold]down-> productRepo : reads products
-animalRepo   -[#0B4884,bold]down-> db : queries\n//[JDBC]//
-productRepo  -[#0B4884,bold]down-> db : queries\n//[JDBC]//
+stationClient -[#0B4884,bold]down-> controller   : registers and reads animals\n//[REST/JSON :8080]//
+recallClient  -[#0B4884,bold]down-> endpoint     : traces a product\n//[gRPC :9090]//
+controller    -[#0B4884,bold]down-> regService   : delegates to
+endpoint      -[#0B4884,bold]down-> traceService : delegates to
+regService    -[#0B4884,bold]down-> repos        : uses
+traceService  -[#0B4884,bold]down-> repos        : uses
+repos         -[#0B4884,bold]down-> db           : queries\n//[JDBC]//
 
 @enduml
