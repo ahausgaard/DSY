@@ -60,7 +60,7 @@ class RegistrationControllerTest
   void registeringANewAnimalReturnsCreated() throws Exception
   {
     when(registrationService.registerAnimal(eq(animalId), eq(deliveryId), eq(Species.Pig), any(), any()))
-        .thenReturn(new Registration(animal, true));
+        .thenReturn(new Registration<>(animal, true));
 
     mvc.perform(post("/animals").contentType(MediaType.APPLICATION_JSON).content(requestBody()))
         .andExpect(status().isCreated())
@@ -72,7 +72,7 @@ class RegistrationControllerTest
   void registeringTheSameAnimalAgainReturnsOk() throws Exception
   {
     when(registrationService.registerAnimal(any(), any(), any(), any(), any()))
-        .thenReturn(new Registration(animal, false));
+        .thenReturn(new Registration<>(animal, false));
 
     mvc.perform(post("/animals").contentType(MediaType.APPLICATION_JSON).content(requestBody()))
         .andExpect(status().isOk());

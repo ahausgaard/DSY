@@ -1,0 +1,114 @@
+package org.example.coursetracker.model;
+
+import jakarta.persistence.*;
+
+import java.util.Objects;
+
+@Entity
+@Table(name = "COURSES")
+public class Course
+{
+  @Id
+  @Column(name = "ID")
+  @GeneratedValue(strategy =
+  GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(name = "NAME")
+  private String name;
+
+  @Column(name = "CATEGORY")
+  private String category;
+
+  @Column(name = "RATING")
+  private int rating;
+
+  @Column(name = "DESCRIPTION")
+  private String description;
+
+  public Course()
+  {
+  }
+
+  public Course(Long id, String name, String category, int rating,
+      String description)
+  {
+    this.id = id;
+    this.name = name;
+    this.category = category;
+    this.rating = rating;
+    this.description = description;
+  }
+
+  public Long getId()
+  {
+    return id;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
+  public void setName(String name)
+  {
+    this.name = name;
+  }
+
+  public String getCategory()
+  {
+    return category;
+  }
+
+  public void setCategory(String category)
+  {
+    this.category = category;
+  }
+
+  public int getRating()
+  {
+    return rating;
+  }
+
+  public void setRating(int rating)
+  {
+    this.rating = rating;
+  }
+
+  public String getDescription()
+  {
+    return description;
+  }
+
+  public void setDescription(String description)
+  {
+    this.description = description;
+  }
+
+  @Override public boolean equals(Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof Course course))
+    {
+      return false;
+    }
+    return rating == course.rating && Objects.equals(id, course.id)
+        && Objects.equals(name, course.name) && Objects.equals(category,
+        course.category) && Objects.equals(description, course.description);
+  }
+
+  @Override public int hashCode()
+  {
+    return Objects.hash(id, name, category, rating, description);
+  }
+
+  @Override public String toString()
+  {
+    return "Course{" + "id=" + id + ", name='" + name + '\'' + ", category='"
+        + category + '\'' + ", rating=" + rating + ", description='"
+        + description + '\'' + '}';
+  }
+}

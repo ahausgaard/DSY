@@ -35,6 +35,17 @@ public class Part
   {
   }
 
+  public Part(UUID partId, Animal animal, PartType partType, Tray tray, BigDecimal weightKg,
+      LocalDateTime cutAt)
+  {
+    this.partId = partId;
+    this.animal = animal;
+    this.partType = partType;
+    this.tray = tray;
+    this.weightKg = weightKg;
+    this.cutAt = cutAt;
+  }
+
   public UUID getPartId()
   {
     return partId;

@@ -27,19 +27,19 @@ import java.util.UUID;
     this.deliveryRepository = deliveryRepository;
   }
 
-  public Registration registerAnimal(UUID animalId, UUID deliveryId,
+  public Registration<Animal> registerAnimal(UUID animalId, UUID deliveryId,
       Species species, BigDecimal liveWeightKg, LocalDateTime registeredAt)
   {
     Optional<Animal> existing = animalRepository.findById(animalId);
     if (existing.isPresent())
-      return new Registration(existing.get(), false);
+      return new Registration<>(existing.get(), false);
 
     Delivery delivery = deliveryRepository.findById(deliveryId).orElseThrow(
         () -> new NotFoundException("No delivery with id " + deliveryId));
 
     Animal animal = animalRepository.save(
         new Animal(animalId, delivery, species, liveWeightKg, registeredAt));
-    return new Registration(animal, true);
+    return new Registration<>(animal, true);
   }
 
   @Transactional(readOnly = true) public Animal getAnimal(UUID animalId)

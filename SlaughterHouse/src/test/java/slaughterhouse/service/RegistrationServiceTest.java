@@ -53,8 +53,8 @@ class RegistrationServiceTest
     when(deliveryRepository.findById(deliveryId)).thenReturn(Optional.of(delivery));
     when(animalRepository.save(any())).thenAnswer(call -> call.getArgument(0));
 
-    Registration registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight, registeredAt);
-    Animal animal = registration.animal();
+    Registration<Animal> registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight, registeredAt);
+    Animal animal = registration.registered();
 
     assertTrue(registration.created());
     assertEquals(animalId, animal.getAnimalId());
@@ -81,9 +81,9 @@ class RegistrationServiceTest
     Animal existing = new Animal(animalId, mock(Delivery.class), Species.Pig, weight, registeredAt);
     when(animalRepository.findById(animalId)).thenReturn(Optional.of(existing));
 
-    Registration registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight, registeredAt);
+    Registration<Animal> registration = service.registerAnimal(animalId, deliveryId, Species.Pig, weight, registeredAt);
 
-    assertSame(existing, registration.animal());
+    assertSame(existing, registration.registered());
     assertFalse(registration.created());
     verify(animalRepository, never()).save(any());
   }

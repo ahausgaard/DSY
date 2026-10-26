@@ -30,9 +30,13 @@ rectangle "SlaughterHouse Server [Java, Spring Boot]" <<boundary>> {
 
   rectangle "**Registration Controller**\n[Spring @RestController]\n\n//Exposes the animal registration API//" <<component>> as controller
 
+  rectangle "**Cutting Controller**\n[Spring @RestController]\n\n//Exposes the tray and part API//" <<component>> as cuttingController
+
   rectangle "**Traceability Endpoint**\n[gRPC service]\n\n//Exposes the traceability RPCs//" <<component>> as endpoint
 
   rectangle "**Registration Service**\n[Spring @Service]\n\n//Registers animals; finds them by id, date or farm//" <<component>> as regService
+
+  rectangle "**Cutting Service**\n[Spring @Service]\n\n//Opens and closes trays; puts parts in them,//\n//enforcing part type and max weight//" <<component>> as cuttingService
 
   rectangle "**Traceability Service**\n[Spring @Service]\n\n//Traces products to animals and back//" <<component>> as traceService
 
@@ -45,10 +49,13 @@ database "**Database**\n[PostgreSQL 18]" <<container>> as db
 stationClient -[hidden]right- recallClient
 
 stationClient -[#0B4884,bold]down-> controller   : registers and reads animals\n//[REST/JSON :8080]//
+stationClient -[#0B4884,bold]down-> cuttingController : registers trays and parts\n//[REST/JSON :8080]//
 recallClient  -[#0B4884,bold]down-> endpoint     : traces a product\n//[gRPC :9090]//
 controller    -[#0B4884,bold]down-> regService   : delegates to
+cuttingController -[#0B4884,bold]down-> cuttingService : delegates to
 endpoint      -[#0B4884,bold]down-> traceService : delegates to
 regService    -[#0B4884,bold]down-> repos        : uses
+cuttingService -[#0B4884,bold]down-> repos       : uses
 traceService  -[#0B4884,bold]down-> repos        : uses
 repos         -[#0B4884,bold]down-> db           : queries\n//[JDBC]//
 

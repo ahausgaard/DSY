@@ -29,6 +29,36 @@ public class Tray
   {
   }
 
+  public Tray(UUID trayId, PartType partType, BigDecimal maxWeightKg, LocalDateTime openedAt)
+  {
+    this.trayId = trayId;
+    this.partType = partType;
+    this.maxWeightKg = maxWeightKg;
+    this.netWeightKg = BigDecimal.ZERO;
+    this.openedAt = openedAt;
+  }
+
+  public boolean isClosed()
+  {
+    return closedAt != null;
+  }
+
+  public boolean hasRoomFor(BigDecimal weightKg)
+  {
+    return netWeightKg.add(weightKg).compareTo(maxWeightKg) <= 0;
+  }
+
+  // The caller checks the part type, that the tray is open and that there is room
+  public void addWeight(BigDecimal weightKg)
+  {
+    netWeightKg = netWeightKg.add(weightKg);
+  }
+
+  public void close(LocalDateTime closedAt)
+  {
+    this.closedAt = closedAt;
+  }
+
   public UUID getTrayId()
   {
     return trayId;

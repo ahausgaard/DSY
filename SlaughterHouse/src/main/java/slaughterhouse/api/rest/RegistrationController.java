@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import slaughterhouse.api.rest.dto.AnimalResponse;
 import slaughterhouse.api.rest.dto.RegisterAnimalRequest;
+import slaughterhouse.domain.Animal;
 import slaughterhouse.service.Registration;
 import slaughterhouse.service.RegistrationService;
 
@@ -25,10 +26,10 @@ import java.util.UUID;
   @PostMapping public ResponseEntity<AnimalResponse> registerAnimal(
       @Valid @RequestBody RegisterAnimalRequest request)
   {
-    Registration registration = registrationService.registerAnimal(
+    Registration<Animal> registration = registrationService.registerAnimal(
         request.animalId(), request.deliveryId(), request.species(),
         request.liveWeightKg(), request.registeredAt());
-    AnimalResponse body = AnimalResponse.from(registration.animal());
+    AnimalResponse body = AnimalResponse.from(registration.registered());
 
     if (registration.created())
       return ResponseEntity.created(URI.create("/animals/" + body.animalId()))
