@@ -36,6 +36,16 @@ public class Product
   {
   }
 
+  public Product(UUID productId, ProductType productType,
+      BigDecimal totalWeightKg, LocalDateTime packedAt, Set<Tray> trays)
+  {
+    this.productId = productId;
+    this.productType = productType;
+    this.totalWeightKg = totalWeightKg;
+    this.packedAt = packedAt;
+    this.trays = trays;
+  }
+
   public UUID getProductId()
   {
     return productId;
