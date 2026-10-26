@@ -32,11 +32,15 @@ rectangle "SlaughterHouse Server [Java, Spring Boot]" <<boundary>> {
 
   rectangle "**Cutting Controller**\n[Spring @RestController]\n\n//Exposes the tray and part API//" <<component>> as cuttingController
 
+  rectangle "**Packing Controller**\n[Spring @RestController]\n\n//Exposes the product packing API//" <<component>> as packingController
+
   rectangle "**Traceability Endpoint**\n[gRPC service]\n\n//Exposes the traceability RPCs//" <<component>> as endpoint
 
   rectangle "**Registration Service**\n[Spring @Service]\n\n//Registers animals; finds them by id, date or farm//" <<component>> as regService
 
   rectangle "**Cutting Service**\n[Spring @Service]\n\n//Opens and closes trays; puts parts in them,//\n//enforcing part type and max weight//" <<component>> as cuttingService
+
+  rectangle "**Packing Service**\n[Spring @Service]\n\n//Packs products from closed trays, checking//\n//they hold exactly the product's part types//" <<component>> as packingService
 
   rectangle "**Traceability Service**\n[Spring @Service]\n\n//Traces products to animals and back//" <<component>> as traceService
 
@@ -50,12 +54,15 @@ stationClient -[hidden]right- recallClient
 
 stationClient -[#0B4884,bold]down-> controller   : registers and reads animals\n//[REST/JSON :8080]//
 stationClient -[#0B4884,bold]down-> cuttingController : registers trays and parts\n//[REST/JSON :8080]//
+stationClient -[#0B4884,bold]down-> packingController : registers products\n//[REST/JSON :8080]//
 recallClient  -[#0B4884,bold]down-> endpoint     : traces a product\n//[gRPC :9090]//
 controller    -[#0B4884,bold]down-> regService   : delegates to
 cuttingController -[#0B4884,bold]down-> cuttingService : delegates to
+packingController -[#0B4884,bold]down-> packingService : delegates to
 endpoint      -[#0B4884,bold]down-> traceService : delegates to
 regService    -[#0B4884,bold]down-> repos        : uses
 cuttingService -[#0B4884,bold]down-> repos       : uses
+packingService -[#0B4884,bold]down-> repos       : uses
 traceService  -[#0B4884,bold]down-> repos        : uses
 repos         -[#0B4884,bold]down-> db           : queries\n//[JDBC]//
 
