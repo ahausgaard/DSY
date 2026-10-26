@@ -1,11 +1,15 @@
 package slaughterhouse.api.rest;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import slaughterhouse.api.rest.dto.PackProductRequest;
 import slaughterhouse.api.rest.dto.ProductResponse;
+import slaughterhouse.domain.Product;
 import slaughterhouse.service.PackingService;
+import slaughterhouse.service.Registration;
 
+import java.net.URI;
 import java.util.UUID;
 
 //Station 3: Packing the trays into products
@@ -18,9 +22,20 @@ import java.util.UUID;
     this.packingService = packingService;
   }
 
-  //@PostMapping("/products") public ResponseEntity<ProductReply> openPacking
+  @PostMapping("/products") public ResponseEntity<ProductResponse> packProduct(
+      @Valid @RequestBody PackProductRequest request)
+  {
+    Registration<Product> registration = packingService.packProduct(request.productId(),
+        request.productTypeCode(), request.trayIds(), request.totalWeightKg(), request.packedAt());
+    ProductResponse body = ProductResponse.from(registration.registered());
 
-  @GetMapping("products/{productId}") public ProductResponse getProduct(
+    if (registration.created())
+      return ResponseEntity.created(URI.create("/products/" + body.productId())).body(body);
+
+    return ResponseEntity.ok(body);
+  }
+
+  @GetMapping("/products/{productId}") public ProductResponse getProduct(
       @PathVariable UUID productId)
   {
     return ProductResponse.from(packingService.getProduct(productId));

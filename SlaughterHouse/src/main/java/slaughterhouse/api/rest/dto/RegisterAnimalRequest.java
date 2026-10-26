@@ -11,5 +11,4 @@ import java.util.UUID;
 public record RegisterAnimalRequest(@NotNull UUID animalId, @NotNull UUID deliveryId, @NotNull Species species, @NotNull @Positive BigDecimal liveWeightKg, @NotNull
                                     LocalDateTime registeredAt)
 {
-
 }
