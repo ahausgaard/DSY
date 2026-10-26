@@ -13,6 +13,7 @@ import slaughterhouse.persistence.TrayRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service @Transactional public class PackingService
 {
@@ -40,20 +41,17 @@ import java.util.*;
         .orElseThrow(() -> new NotFoundException(
             "No product type with code " + productTypeCode));
 
-    Set<Tray> trays = new HashSet<>();
-
-    for (UUID trayId : trayIds)
-      trays.add(trayRepository.findById(trayId).orElseThrow(
-          () -> new NotFoundException("No tray with id " + trayId)));
+    Set<Tray> trays = trayIds.stream()
+        .map(trayId -> trayRepository.findById(trayId).orElseThrow(
+            () -> new NotFoundException("No tray with id " + trayId)))
+        .collect(Collectors.toSet());
 
     if (trays.isEmpty())
       throw new RuleViolationException("A product needs at least one tray");
 
-    Set<Integer> neededPartTypes = new HashSet<>();
-    for (ProductComponent component : productType.getComponents())
-      neededPartTypes.add(component.getPartType().getCode());
-
-    Set<Integer> givenPartTypes = new HashSet<>();
+    Set<Integer> neededPartTypes = productType.getComponents().stream()
+        .map(component -> component.getPartType().getCode())
+        .collect(Collectors.toSet());
 
     for (Tray tray : trays)
     {
@@ -70,10 +68,11 @@ import java.util.*;
         throw new RuleViolationException(
             "Tray " + tray.getTrayId() + " holds " + tray.getPartType()
                 .getName() + ", which is not part of " + productType.getName());
-
-      givenPartTypes.add(tray.getPartType().getCode());
     }
 
+    Set<Integer> givenPartTypes = trays.stream()
+        .map(tray -> tray.getPartType().getCode())
+        .collect(Collectors.toSet());
 
     for (ProductComponent component : productType.getComponents())
       if (!givenPartTypes.contains(component.getPartType().getCode()))
