@@ -1,0 +1,25 @@
+# RabbitMQ broker for the rabbitmq topic. Start with "docker compose up -d", stop with "docker compose stop".
+#   5552  - stream protocol, what the Java code connects to
+#   15672 - management page, http://localhost:15672 (guest / guest)
+services:
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    ports:
+      - "5552:5552"
+      - "15672:15672"
+    environment:
+      # The broker tells stream clients which host to connect to. Without this it sends the
+      # container's internal hostname, which cannot be reached from Windows
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_stream advertised_host localhost"
+    # Streams are a plugin that is off by default, so enable it before the server starts
+    command: >
+      bash -c "rabbitmq-plugins enable --offline rabbitmq_stream rabbitmq_stream_management
+      && exec rabbitmq-server"
+    volumes:
+      # Keeps streams and their messages when the container is recreated
+      - rabbitmq-data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq-data:
+    name: rabbitmq-data

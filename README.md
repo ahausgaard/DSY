@@ -13,6 +13,8 @@ src/main/java/dsy/
   springboot/
     calculatorservice/
       CalculatorServiceApplication.java
+  rabbitmq/
+    helloworld/
 src/test/java/dsy/
   intro/calculatorapi/         <- tests for that assignment
   springboot/calculatorservice/
@@ -62,6 +64,30 @@ Three things the parent would otherwise have handled, and that are therefore set
 The HTTP client is Spring's `RestClient`, and Jackson maps the JSON onto a record - the intro
 topic does the same thing by hand with `HttpClient` and a regex.
 
+## RabbitMQ
+
+The `rabbitmq` topic is a series of small messaging exercises, one subpackage each, following
+the [RabbitMQ Streams tutorials](https://www.rabbitmq.com/tutorials/tutorial-one-java-stream).
+They use the RabbitMQ Stream Java client (`stream-client`). The tutorial pins version 0.16.0;
+here the Spring Boot BOM supplies a newer one, so the dependency in `pom.xml` has no version.
+
+The broker runs in Docker and is described in `docker-compose.yml` in the repo root:
+
+```
+docker compose up -d     -> starts RabbitMQ (Docker Desktop must be running)
+docker compose stop      -> stops it again
+```
+
+The compose file does what the tutorial's `docker run` command and `rabbitmq-plugins enable`
+step do: it enables the stream plugin, opens port 5552 and makes the broker advertise
+`localhost`. So skip those steps in the tutorial and use `docker compose up -d` instead.
+
+The Java code connects to `localhost:5552`; the management page is <http://localhost:15672>
+(`guest` / `guest`), where streams and message counts can be watched under *Queues and Streams*.
+
+Each exercise has several main classes that run as separate processes. Start the receiving side
+first, then the sending side. To run more than one copy of the same class, tick
+**Allow multiple instances** under *Modify options* in the IntelliJ run configuration.
 ## Tests
 
 JUnit 5 (`junit-jupiter`), run with `mvn test` or from the IDE.
