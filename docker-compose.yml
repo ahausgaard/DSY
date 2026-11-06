@@ -1,5 +1,6 @@
 # RabbitMQ broker for the rabbitmq topic. Start with "docker compose up -d", stop with "docker compose stop".
-#   5552  - stream protocol, what the Java code connects to
+#   5552  - stream protocol, what the stream-client code connects to
+#   5672  - AMQP 0-9-1, what the amqp-client code (exchanges, queues) connects to
 #   15672 - management page, http://localhost:15672 (guest / guest)
 services:
   rabbitmq:
@@ -7,6 +8,7 @@ services:
     container_name: rabbitmq
     ports:
       - "5552:5552"
+      - "5672:5672"
       - "15672:15672"
     environment:
       # The broker tells stream clients which host to connect to. Without this it sends the

@@ -110,6 +110,12 @@
             <artifactId>stream-client</artifactId>
         </dependency>
 
+        <!-- RabbitMQ AMQP 0-9-1 Java client (port 5672): exchanges, queues, bindings. Version comes from the Spring Boot BOM -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+        </dependency>
+
         <!-- JUnit 5: only needed when compiling and running the tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
