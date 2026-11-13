@@ -1,0 +1,37 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+interface "java.rmi.Remote" as Remote
+
+package addressserver {
+  interface RemoteAddressServer {
+    + register(alias : String, peer : RemotePeer)
+    + lookup(alias : String) : RemotePeer
+  }
+  class AddressServer {
+    - peers : Map<String, RemotePeer>
+  }
+}
+
+package peer {
+  interface RemotePeer {
+    + receiveMessage(fromAlias : String, text : String)
+  }
+  class Peer {
+    - alias : String
+    - server : RemoteAddressServer
+    + register()
+    + sendMessage(toAlias : String, text : String)
+  }
+}
+
+Remote <|-- RemoteAddressServer
+Remote <|-- RemotePeer
+RemoteAddressServer <|.. AddressServer
+RemotePeer <|.. Peer
+
+AddressServer o--> "*" RemotePeer : knows
+Peer --> RemoteAddressServer : registers / looks up
+Peer ..> RemotePeer : sends to
+@enduml
