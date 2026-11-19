@@ -1,11 +1,11 @@
-@startuml c4-l3-component
-title SlaughterHouse Server - C4 Level 3: Components
+@startuml task3.5-c4-l3-component
+title Task 3.5 - SlaughterHouse Server - C4 Level 3: Components
 
 hide stereotype
 skinparam shadowing false
 skinparam defaultTextAlignment center
-skinparam rectangle<<container>> {
-  BackgroundColor #438DD5
+skinparam rectangle<<person>> {
+  BackgroundColor #08427B
   FontColor #FFFFFF
 }
 skinparam database<<container>> {
@@ -23,8 +23,8 @@ skinparam rectangle<<boundary>> {
   FontColor #AAAAAA
 }
 
-rectangle "**Station Client**\n[Java console app]" <<container>> as stationClient
-rectangle "**Recall Client**\n[Java console app]" <<container>> as recallClient
+rectangle "**Station Operators**\n[Stations 1-3]" <<person>> as operators
+rectangle "**Quality Manager**\n//or Distributor//" <<person>> as quality
 
 rectangle "SlaughterHouse Server [Java, Spring Boot]" <<boundary>> {
 
@@ -50,12 +50,12 @@ rectangle "SlaughterHouse Server [Java, Spring Boot]" <<boundary>> {
 database "**Database**\n[PostgreSQL 18]" <<container>> as db
 
 ' Keep the two flows side by side
-stationClient -[hidden]right- recallClient
+operators -[hidden]right- quality
 
-stationClient -[#0B4884,bold]down-> controller   : registers and reads animals\n//[REST/JSON :8080]//
-stationClient -[#0B4884,bold]down-> cuttingController : registers trays and parts\n//[REST/JSON :8080]//
-stationClient -[#0B4884,bold]down-> packingController : registers products\n//[REST/JSON :8080]//
-recallClient  -[#0B4884,bold]down-> endpoint     : traces a product\n//[gRPC :9090]//
+operators -[#0B4884,bold]down-> controller   : registers and reads animals\n//[REST/JSON :8080]//
+operators -[#0B4884,bold]down-> cuttingController : registers trays and parts\n//[REST/JSON :8080]//
+operators -[#0B4884,bold]down-> packingController : registers products\n//[REST/JSON :8080]//
+quality  -[#0B4884,bold]down-> endpoint     : traces a product\n//[gRPC :9090]//
 controller    -[#0B4884,bold]down-> regService   : delegates to
 cuttingController -[#0B4884,bold]down-> cuttingService : delegates to
 packingController -[#0B4884,bold]down-> packingService : delegates to

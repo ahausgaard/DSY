@@ -1,5 +1,5 @@
-@startuml c4-l2-container
-title SlaughterHouse - C4 Level 2: Containers
+@startuml task3.5-c4-l2-container
+title Task 3.5 - SlaughterHouse - C4 Level 2: Containers
 
 hide stereotype
 skinparam shadowing false
@@ -34,12 +34,6 @@ rectangle "**Quality Manager**\n//Initiates a recall//" <<person>> as quality
 
 rectangle "SlaughterHouse System" <<boundary>> {
 
-  ' One deployable, started three times - the station is a startup choice,
-  ' not a separate program
-  rectangle "**Station Client**\n[Java console app]\n\n//One deployable, run at each of the three//\n//stations; the station is chosen at startup.//\n//Registers animals, parts, trays and products//" <<container>> as stationClient
-
-  rectangle "**Recall Client**\n[Java console app]\n\n//Asks which animals are in a product and//\n//which products an animal ended up in//" <<container>> as recallClient
-
   rectangle "**SlaughterHouse Server**\n[Java, Spring Boot, REST :8080, gRPC :9090]\n\n//Holds the domain model, registration and//\n//traceability logic; the only container that//\n//talks to the database//" <<container>> as server
 
   database "**Database**\n[PostgreSQL 18]\n\n//Catalogue (farms, part types, product types)//\n//and operational data (deliveries, animals,//\n//parts, trays, products)//" <<container>> as db
@@ -53,25 +47,15 @@ reception -[hidden]right- cutting
 cutting   -[hidden]right- packing
 packing   -[hidden]right- quality
 
-' Keep the two clients side by side above the server
-stationClient -[hidden]right- recallClient
+' No client app is built: the API is called directly (tests, Postman, grpcurl)
+reception -[#0B4884,bold]down-> server : registers animals\n//[REST/JSON]//
+cutting   -[#0B4884,bold]down-> server : registers trays and parts\n//[REST/JSON]//
+packing   -[#0B4884,bold]down-> server : registers products\n//[REST/JSON]//
+quality   -[#0B4884,bold]down-> server : traces a product\n//[gRPC]//
+server    -[#0B4884,bold]down-> db     : reads from and writes to\n//[JDBC]//
 
-' Each operator uses a client, never the server directly
-reception -[#0B4884,bold]down-> stationClient : registers animals
-cutting   -[#0B4884,bold]down-> stationClient : registers parts and trays
-packing   -[#0B4884,bold]down-> stationClient : registers products
-quality   -[#0B4884,bold]down-> recallClient  : asks for affected products
-
-' Clients to server, server to database. Stations queue their work locally and send
-' it when the network is up, so they keep working while it is down. The client-made
-' ids make a resend safe
-stationClient -[#0B4884,dashed]down-> server : registers work\n//[REST/JSON], queued while//\n//offline, sent when back online//
-recallClient  -[#0B4884,bold]down-> server : traces a product\n//[gRPC]//
-server        -[#0B4884,bold]down-> db     : reads from and writes to\n//[JDBC]//
-
-' Recall, out of the slaughterhouse and back in
-server      -[#0B4884,dashed]right-> distributor  : recall notice
-distributor -[#0B4884,bold]up->      recallClient : traces a received product
+' Recall: a distributor traces a product it received
+distributor -[#0B4884,bold]up-> server : traces a received product\n//[gRPC]//
 
 ' Physical flow
 farm    -[#8C8C8C,dotted]down-> reception   : live animals //(physical)//
@@ -79,7 +63,6 @@ packing -[#8C8C8C,dotted]down-> distributor : packed products //(physical)//
 
 legend right
   **Solid**: direct, synchronous
-  **Dashed**: indirect, asynchronous
   **Dotted**: physical flow
 endlegend
 

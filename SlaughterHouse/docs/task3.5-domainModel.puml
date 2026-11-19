@@ -1,5 +1,5 @@
-@startuml domain-model
-title SlaughterHouse - Domain Model
+@startuml task3.5-domain-model
+title Task 3.5 - SlaughterHouse - Domain Model
 
 class Farm
 {

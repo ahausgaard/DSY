@@ -1,5 +1,5 @@
-@startuml c4-l1-context
-title SlaughterHouse - C4 Level 1: System Context
+@startuml task3.5-c4-l1-context
+title Task 3.5 - SlaughterHouse - C4 Level 1: System Context
 
 hide stereotype
 skinparam shadowing false
@@ -38,8 +38,7 @@ cutting   -[#0B4884,bold]down-> shs : registers parts and trays
 packing   -[#0B4884,bold]down-> shs : registers products
 quality   -[#0B4884,bold]down-> shs : asks for affected products
 
-' Recall, in and out of the slaughterhouse
-shs -[#0B4884,dashed]down-> distributor : recall notice
+' Recall: a distributor traces a product it received
 distributor -[#0B4884,bold]up-> shs : traces a received product
 
 ' Physical flow
@@ -48,7 +47,6 @@ packing -[#8C8C8C,dotted]down-> distributor : packed products //(physical)//
 
 legend right
   **Solid**: direct, synchronous
-  **Dashed**: indirect, asynchronous
   **Dotted**: physical flow
 endlegend
 
