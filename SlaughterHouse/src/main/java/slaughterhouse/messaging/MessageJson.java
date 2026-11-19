@@ -2,7 +2,7 @@ package slaughterhouse.messaging;
 
 import tools.jackson.databind.json.JsonMapper;
 
-// Turns message records into the bytes RabbitMQ carries, and back.
+// Turns station messages into the bytes RabbitMQ carries, and back.
 // Jackson 3 handles UUID, BigDecimal and LocalDateTime without extra modules
 public final class MessageJson
 {
@@ -12,13 +12,14 @@ public final class MessageJson
   {
   }
 
-  public static byte[] toBytes(Object message)
+  public static byte[] toBytes(StationMessage message)
   {
-    return MAPPER.writeValueAsBytes(message);
+    // Written as StationMessage so the "@type" name is always included
+    return MAPPER.writerFor(StationMessage.class).writeValueAsBytes(message);
   }
 
-  public static <T> T fromBytes(byte[] body, Class<T> type)
+  public static StationMessage fromBytes(byte[] body)
   {
-    return MAPPER.readValue(body, type);
+    return MAPPER.readValue(body, StationMessage.class);
   }
 }

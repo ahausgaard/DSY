@@ -32,11 +32,7 @@ rectangle "**Quality Manager**\n//or Distributor//" <<person>> as quality
 
 rectangle "SlaughterHouse Server [Java, Spring Boot]" <<boundary>> {
 
-  rectangle "**Registration Listener**\n[Spring @RabbitListener]\n\n//Takes animal registrations//" <<component>> as regListener
-
-  rectangle "**Cutting Listener**\n[Spring @RabbitListener]\n\n//Takes part and tray registrations//" <<component>> as cuttingListener
-
-  rectangle "**Packing Listener**\n[Spring @RabbitListener]\n\n//Takes product registrations//" <<component>> as packingListener
+  rectangle "**Station Listener**\n[Spring @RabbitListener]\n\n//Takes all station messages in the order//\n//they were sent and hands each to its service//" <<component>> as listener
 
   rectangle "**Traceability Endpoint**\n[gRPC service]\n\n//Exposes the traceability RPCs//" <<component>> as endpoint
 
@@ -56,14 +52,12 @@ database "**Database**\n[PostgreSQL 18]" <<container>> as db
 ' Keep the two flows side by side
 broker -[hidden]right- quality
 
-broker  -[#0B4884,dashed]down-> regListener     : animal registered\n//[AMQP]//
-broker  -[#0B4884,dashed]down-> cuttingListener : part registered,\ntray closed\n//[AMQP]//
-broker  -[#0B4884,dashed]down-> packingListener : product packed\n//[AMQP]//
-quality -[#0B4884,bold]down->   endpoint        : traces a product\n//[gRPC :9090]//
+broker   -[#0B4884,dashed]down-> listener : animal registered, tray opened,\npart registered, tray closed,\nproduct packed\n//[AMQP, one queue]//
+quality  -[#0B4884,bold]down->   endpoint : traces a product\n//[gRPC :9090]//
 
-regListener     -[#0B4884,bold]down-> regService     : delegates to
-cuttingListener -[#0B4884,bold]down-> cuttingService : delegates to
-packingListener -[#0B4884,bold]down-> packingService : delegates to
+listener        -[#0B4884,bold]down-> regService     : delegates to
+listener        -[#0B4884,bold]down-> cuttingService : delegates to
+listener        -[#0B4884,bold]down-> packingService : delegates to
 endpoint        -[#0B4884,bold]down-> traceService   : delegates to
 regService      -[#0B4884,bold]down-> repos          : uses
 cuttingService  -[#0B4884,bold]down-> repos          : uses

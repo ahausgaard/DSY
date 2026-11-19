@@ -8,6 +8,6 @@ import java.util.UUID;
 // The station makes the animalId, so resending the same message can't create a second animal.
 // Species is a String, not domain.Species, so the stations don't depend on the server's domain
 public record AnimalRegistered(UUID animalId, UUID deliveryId, String species, BigDecimal liveWeightKg,
-                               LocalDateTime registeredAt)
+                               LocalDateTime registeredAt) implements StationMessage
 {
 }

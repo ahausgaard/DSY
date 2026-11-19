@@ -42,7 +42,7 @@ rectangle "SlaughterHouse System" <<boundary>> {
   rectangle "**Cutting Station**\n[Java console app]\n\n//Registers parts and trays//" <<container>> as station2
   rectangle "**Packing Station**\n[Java console app]\n\n//Registers products//" <<container>> as station3
 
-  queue "**Message Broker**\n[RabbitMQ]\n\n//Holds registrations until//\n//the server takes them//" <<container>> as broker
+  queue "**Message Broker**\n[RabbitMQ]\n\n//One durable queue holds all//\n//registrations, in order, until//\n//the server takes them//" <<container>> as broker
 
   rectangle "**SlaughterHouse Server**\n[Java, Spring Boot, gRPC :9090]\n\n//Validates and stores registrations;//\n//traces products to animals and back.//\n//The only container that talks to the database//" <<container>> as server
 
@@ -65,7 +65,7 @@ packing   -[#0B4884,bold]down-> station3 : registers products
 
 ' Stations never wait for the server: they publish and carry on
 station1 -[#0B4884,dashed]down-> broker : animal registered\n//[AMQP]//
-station2 -[#0B4884,dashed]down-> broker : part registered,\ntray closed\n//[AMQP]//
+station2 -[#0B4884,dashed]down-> broker : tray opened,\npart registered,\ntray closed\n//[AMQP]//
 station3 -[#0B4884,dashed]down-> broker : product packed\n//[AMQP]//
 broker   -[#0B4884,dashed]down-> server : delivers registrations\n//[AMQP]//
 server   -[#0B4884,bold]down->   db     : reads from and writes to\n//[JDBC]//
