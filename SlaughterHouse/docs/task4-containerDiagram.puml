@@ -1,0 +1,87 @@
+@startuml task4-c4-l2-container
+title Task 4 - SlaughterHouse - C4 Level 2: Containers
+
+hide stereotype
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle<<person>> {
+  BackgroundColor #08427B
+  FontColor #FFFFFF
+}
+skinparam rectangle<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam database<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam queue<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam rectangle<<external>> {
+  BackgroundColor #6E6E6E
+  FontColor #FFFFFF
+}
+skinparam rectangle<<boundary>> {
+  BackgroundColor transparent
+  BorderColor #AAAAAA
+  BorderStyle dashed
+  FontColor #AAAAAA
+}
+
+rectangle "**Reception Operator**\n[Station 1]" <<person>> as reception
+rectangle "**Cutting Operator**\n[Station 2]" <<person>> as cutting
+rectangle "**Packing Operator**\n[Station 3]" <<person>> as packing
+rectangle "**Quality Manager**\n//Initiates a recall//" <<person>> as quality
+
+rectangle "SlaughterHouse System" <<boundary>> {
+
+  rectangle "**Reception Station**\n[Java console app]\n\n//Registers arriving animals//" <<container>> as station1
+  rectangle "**Cutting Station**\n[Java console app]\n\n//Registers parts and trays//" <<container>> as station2
+  rectangle "**Packing Station**\n[Java console app]\n\n//Registers products//" <<container>> as station3
+
+  queue "**Message Broker**\n[RabbitMQ]\n\n//Holds registrations until//\n//the server takes them//" <<container>> as broker
+
+  rectangle "**SlaughterHouse Server**\n[Java, Spring Boot, gRPC :9090]\n\n//Validates and stores registrations;//\n//traces products to animals and back.//\n//The only container that talks to the database//" <<container>> as server
+
+  database "**Database**\n[PostgreSQL 18]\n\n//Catalogue (farms, part types, product types)//\n//and operational data (deliveries, animals,//\n//parts, trays, products)//" <<container>> as db
+}
+
+rectangle "**Farm**\n//Delivers live animals//" <<external>> as farm
+rectangle "**Distributor / Supermarket**\n//Receives products//" <<external>> as distributor
+
+' Keep the operators and their stations in process order, left to right
+reception -[hidden]right- cutting
+cutting   -[hidden]right- packing
+packing   -[hidden]right- quality
+station1  -[hidden]right- station2
+station2  -[hidden]right- station3
+
+reception -[#0B4884,bold]down-> station1 : registers animals
+cutting   -[#0B4884,bold]down-> station2 : registers parts and trays
+packing   -[#0B4884,bold]down-> station3 : registers products
+
+' Stations never wait for the server: they publish and carry on
+station1 -[#0B4884,dashed]down-> broker : animal registered\n//[AMQP]//
+station2 -[#0B4884,dashed]down-> broker : part registered,\ntray closed\n//[AMQP]//
+station3 -[#0B4884,dashed]down-> broker : product packed\n//[AMQP]//
+broker   -[#0B4884,dashed]down-> server : delivers registrations\n//[AMQP]//
+server   -[#0B4884,bold]down->   db     : reads from and writes to\n//[JDBC]//
+
+' Recall: traced directly against the server
+quality     -[#0B4884,bold]down-> server : traces a product\n//[gRPC]//
+distributor -[#0B4884,bold]up->   server : traces a received product\n//[gRPC]//
+
+' Physical flow
+farm    -[#8C8C8C,dotted]down-> reception   : live animals //(physical)//
+packing -[#8C8C8C,dotted]down-> distributor : packed products //(physical)//
+
+legend right
+  **Solid**: direct, synchronous
+  **Dashed**: indirect, asynchronous
+  **Dotted**: physical flow
+endlegend
+
+@enduml

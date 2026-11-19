@@ -1,0 +1,79 @@
+@startuml task4-c4-l3-component
+title Task 4 - SlaughterHouse Server - C4 Level 3: Components
+
+hide stereotype
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle<<person>> {
+  BackgroundColor #08427B
+  FontColor #FFFFFF
+}
+skinparam database<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam queue<<container>> {
+  BackgroundColor #438DD5
+  FontColor #FFFFFF
+}
+skinparam rectangle<<component>> {
+  BackgroundColor #85BBF0
+  FontColor #000000
+}
+skinparam rectangle<<boundary>> {
+  BackgroundColor transparent
+  BorderColor #AAAAAA
+  BorderStyle dashed
+  FontColor #AAAAAA
+}
+
+queue "**Message Broker**\n[RabbitMQ]" <<container>> as broker
+rectangle "**Quality Manager**\n//or Distributor//" <<person>> as quality
+
+rectangle "SlaughterHouse Server [Java, Spring Boot]" <<boundary>> {
+
+  rectangle "**Registration Listener**\n[Spring @RabbitListener]\n\n//Takes animal registrations//" <<component>> as regListener
+
+  rectangle "**Cutting Listener**\n[Spring @RabbitListener]\n\n//Takes part and tray registrations//" <<component>> as cuttingListener
+
+  rectangle "**Packing Listener**\n[Spring @RabbitListener]\n\n//Takes product registrations//" <<component>> as packingListener
+
+  rectangle "**Traceability Endpoint**\n[gRPC service]\n\n//Exposes the traceability RPCs//" <<component>> as endpoint
+
+  rectangle "**Registration Service**\n[Spring @Service]\n\n//Registers animals; finds them by id, date or farm//" <<component>> as regService
+
+  rectangle "**Cutting Service**\n[Spring @Service]\n\n//Opens and closes trays; puts parts in them,//\n//enforcing part type and max weight//" <<component>> as cuttingService
+
+  rectangle "**Packing Service**\n[Spring @Service]\n\n//Packs products from closed trays, checking//\n//they hold exactly the product's part types//" <<component>> as packingService
+
+  rectangle "**Traceability Service**\n[Spring @Service]\n\n//Traces products to animals and back//" <<component>> as traceService
+
+  rectangle "**Repositories**\n[Spring Data JPA]\n\n//Read and write the domain entities//" <<component>> as repos
+}
+
+database "**Database**\n[PostgreSQL 18]" <<container>> as db
+
+' Keep the two flows side by side
+broker -[hidden]right- quality
+
+broker  -[#0B4884,dashed]down-> regListener     : animal registered\n//[AMQP]//
+broker  -[#0B4884,dashed]down-> cuttingListener : part registered,\ntray closed\n//[AMQP]//
+broker  -[#0B4884,dashed]down-> packingListener : product packed\n//[AMQP]//
+quality -[#0B4884,bold]down->   endpoint        : traces a product\n//[gRPC :9090]//
+
+regListener     -[#0B4884,bold]down-> regService     : delegates to
+cuttingListener -[#0B4884,bold]down-> cuttingService : delegates to
+packingListener -[#0B4884,bold]down-> packingService : delegates to
+endpoint        -[#0B4884,bold]down-> traceService   : delegates to
+regService      -[#0B4884,bold]down-> repos          : uses
+cuttingService  -[#0B4884,bold]down-> repos          : uses
+packingService  -[#0B4884,bold]down-> repos          : uses
+traceService    -[#0B4884,bold]down-> repos          : uses
+repos           -[#0B4884,bold]down-> db             : queries\n//[JDBC]//
+
+legend right
+  **Solid**: direct, synchronous
+  **Dashed**: indirect, asynchronous
+endlegend
+
+@enduml
