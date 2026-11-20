@@ -88,6 +88,22 @@ The Java code connects to `localhost:5552`; the management page is <http://local
 Each exercise has several main classes that run as separate processes. Start the receiving side
 first, then the sending side. To run more than one copy of the same class, tick
 **Allow multiple instances** under *Modify options* in the IntelliJ run configuration.
+## Managing Transactions
+
+`managing-transactions/` is a separate Spring Boot project (own `pom.xml` and `mvnw`) that follows
+the [Managing Transactions guide](https://spring.io/guides/gs/managing-transactions). It uses
+`spring-boot-starter-jdbc` and an in-memory H2 database, so nothing has to run in Docker.
+It is a console program: it runs at startup, logs its results and exits.
+
+```
+cd managing-transactions
+./mvnw spring-boot:run
+```
+
+Code goes in `src/main/java/dsy/transactions/`, and the database schema in
+`src/main/resources/`. If the project does not show up in IntelliJ, right-click its `pom.xml` and
+choose *Add as Maven Project*.
+
 ## Tests
 
 JUnit 5 (`junit-jupiter`), run with `mvn test` or from the IDE.
